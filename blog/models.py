@@ -26,5 +26,5 @@ class Blog(models.Model):
     blog_body = models.TextField()
     status = models.CharField(max_length=100,choices=STATUS_CHOICE,default='draft')
     is_featured = models.BooleanField(default=False)
-    created_at = models.DateField(auto_now_add=True)
-    updated_at = models.DateField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
