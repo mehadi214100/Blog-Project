@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from . import models
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
+from .forms import Register,Login
+from django.contrib.auth import login,logout
 
 def home(request):
     category = models.Category.objects.all()
@@ -44,3 +46,35 @@ def search(request):
         'posts':posts
     }
     return render(request,'search.html',context)
+
+def registration(request):
+    if request.method == 'POST':
+        form = Register(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+    else:
+        form = Register()
+    contex = {
+        'form':form
+    }
+    return render(request,'registration.html',contex)
+
+
+def login_form(request):
+    if request.method == 'POST':
+        form = Login(request,request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request,user)
+            return redirect('/')
+    else:
+        form = Login()
+    context = {
+        'form':form
+    }
+    return render(request,'login.html',context)
+
+def logout_user(request):
+    logout(request)
+    return redirect('/')
