@@ -13,13 +13,13 @@
       >
         <div class="col-md-8 px-0">
           <h1 class="display-4 font-italic">
-            {{post.title}}
+            <a href="{% url 'single_blog' post.slug %}" class="text-white">{{post.title}}</a>
           </h1>
           <p class="lead my-3">
             {{post.short_desc}}
           </p>
           <p class="lead mb-0">
-            <a href="#" class="text-white font-weight-bold"
+            <a href="{% url 'single_blog' post.slug %}" class="text-white font-weight-bold"
               >Continue reading...</a
             >
           </p>
@@ -35,7 +35,7 @@
         <div class="col-md-6">
           <div class="card border-0">
             <div class="card-body">
-              <h3>{{post.title}}</h3>
+              <h3><a href="{% url 'single_blog' post.slug %}">{{post.title}}</a></h3>
               <small class="mb-1 text-muted">{{post.created_at | timesince}} ago | {{post.author}}</small>
               <p class="card-text">
                 {{post.short_desc}}
@@ -54,7 +54,7 @@
           <div class="col-md-8 blog-main">
             {% for post in allpost%}
             <div class="blog-post">
-              <h2 class="blog-post-title">{{post.title}}</h2>
+              <h2 class="blog-post-title"><a href="{% url 'single_blog' post.slug %}">{{post.title}}</a></h2>
               <p class="blog-post-meta">
                 {{post.created_at}} by <a href="#">{{post.author}}</a>
               </p>
@@ -66,7 +66,7 @@
               <p>
                 {{post.blog_body | truncatewords:30 }}
               </p>
-              <a href="">See more...</a>
+              <a href="{% url 'single_blog' post.slug %}">See more...</a>
             </div>
             {% endfor %}
             <!-- /.blog-post -->

@@ -29,3 +29,8 @@ def posts_by_category(request,category_id):
         'categorys':categorys
     }
     return render(request,'posts_by_category.html',contex)
+
+def single_blog(request,slug):
+    post = get_object_or_404(models.Blog,slug=slug,status='publish')
+    
+    return render(request,'singleblog.html',{"post":post})

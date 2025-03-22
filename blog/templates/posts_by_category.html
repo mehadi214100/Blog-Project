@@ -7,7 +7,7 @@
           <div class="col-md-8 blog-main">
             {% for post in posts%}
             <div class="blog-post">
-              <h2 class="blog-post-title">{{post.title}}</h2>
+              <h2 class="blog-post-title"><a href="{% url 'single_blog' post.slug %}">{{post.title}}</a></h2>
               <p class="blog-post-meta">
                 {{post.created_at}} by <a href="#">{{post.author}}</a>
               </p>
@@ -19,7 +19,7 @@
               <p>
                 {{post.blog_body | truncatewords:30 }}
               </p>
-              <a href="">See more...</a>
+              <a href="{% url "single_blog" post.slug %}">See more...</a>
             </div>
             {% endfor %}
             <!-- /.blog-post -->
