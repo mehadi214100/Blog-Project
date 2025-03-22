@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from . import models
 from django.shortcuts import get_object_or_404
-# Create your views here.
+from django.db.models import Q
 
 def home(request):
     category = models.Category.objects.all()
@@ -34,3 +34,13 @@ def single_blog(request,slug):
     post = get_object_or_404(models.Blog,slug=slug,status='publish')
     
     return render(request,'singleblog.html',{"post":post})
+
+
+def search(request):
+    keyword = request.GET.get('keyword')
+    posts = models.Blog.objects.filter(Q(title__icontains = keyword) | Q(short_desc__icontains = keyword),status='publish')
+    context = {
+        'keyword':keyword,
+        'posts':posts
+    }
+    return render(request,'search.html',context)
