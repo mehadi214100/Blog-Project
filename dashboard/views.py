@@ -1,7 +1,9 @@
 from django.shortcuts import render,redirect
 from blog.models import Category,Blog
 from django.contrib.auth.decorators import login_required
-from .forms import categoryForm
+from .forms import categoryForm,postForm
+from django.template.defaultfilters import slugify
+
 @login_required
 def dashboard(request):
     category_count = Category.objects.all().count()
@@ -16,7 +18,6 @@ def dashboard(request):
 
 
 def categories(request):
-    print(request.path)
     return render(request,'categories.html')
 
 def add_categories(request):
@@ -51,3 +52,52 @@ def delete_categories(request,id):
     cate = Category.objects.get(id=id)
     cate.delete()
     return redirect('categories')
+
+def posts(request):
+    posts = Blog.objects.all()
+    context = {
+        'posts':posts
+    }
+    return render(request,'posts.html',context)
+
+def add_post(request):
+    if request.method == 'POST':
+        form = postForm(request.POST,request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            title = form.cleaned_data['title']
+            post.slug = slugify(title)
+            post.save()
+            return redirect('posts')
+    else:
+        form = postForm()
+    contex = {
+        'form':form
+    }
+    return render(request,'add_post.html',contex)
+
+
+def edit_post(request,id):
+    post = Blog.objects.get(id=id)
+    if request.method == 'POST':
+        form = postForm(request.POST,request.FILES,instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            title = form.cleaned_data['title']
+            post.slug = slugify(title)
+            post.save()
+            return redirect('posts')
+    else:
+        form = postForm(instance=post)
+    contex = {
+        'form':form
+    }
+    return render(request,'add_post.html',contex)
+
+
+def delete_post(request,id):
+    post = Blog.objects.get(id=id)
+    post.delete()
+    return redirect('posts')
