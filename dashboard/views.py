@@ -3,7 +3,8 @@ from blog.models import Category,Blog
 from django.contrib.auth.decorators import login_required
 from .forms import categoryForm,postForm
 from django.template.defaultfilters import slugify
-
+from django.http import HttpResponse
+from .decorators import manager_required,editor_required,author_required
 @login_required
 def dashboard(request):
     category_count = Category.objects.all().count()
@@ -16,7 +17,7 @@ def dashboard(request):
     }
     return render(request,'dashboard.html',context)
 
-
+@manager_required
 def categories(request):
     return render(request,'categories.html')
 
@@ -53,6 +54,7 @@ def delete_categories(request,id):
     cate.delete()
     return redirect('categories')
 
+@editor_required
 def posts(request):
     posts = Blog.objects.all()
     context = {
