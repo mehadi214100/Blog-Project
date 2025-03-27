@@ -1,6 +1,8 @@
 from django import forms
 from blog.models import Category,Blog
 
+
+
 class categoryForm(forms.ModelForm):
     class Meta:
         model = Category

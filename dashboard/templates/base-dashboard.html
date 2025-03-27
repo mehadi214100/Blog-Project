@@ -7,7 +7,7 @@
                 <a href="{% url "dashboard" %}" class="nav-link text-dark {% if request.path == '/dashboard/' %}bg-warning{% endif %}">Dashboard</a>
                 <a href="{% url "categories" %}" class="nav-link text-dark {% if  '/categories/' in request.path %}bg-warning{% endif %}">Categories</a>
                 <a href="{% url "posts" %}" class="nav-link text-dark {% if  '/posts/' in request.path %}bg-warning{% endif %}">Post</a>
-                <a href="" class="nav-link text-dark">Logout</a>
+                <a href="{% url "pass_change" %}" class="nav-link text-dark">Chage Password </a>
             </div>
         </div>
         {% block dashboard%}

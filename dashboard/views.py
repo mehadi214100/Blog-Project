@@ -5,6 +5,9 @@ from .forms import categoryForm,postForm
 from django.template.defaultfilters import slugify
 from django.http import HttpResponse
 from .decorators import manager_required,editor_required,author_required
+from django.contrib.auth.forms import PasswordChangeForm,SetPasswordForm
+from django.contrib.auth import update_session_auth_hash
+
 @login_required
 def dashboard(request):
     category_count = Category.objects.all().count()
@@ -103,3 +106,18 @@ def delete_post(request,id):
     post = Blog.objects.get(id=id)
     post.delete()
     return redirect('posts')
+
+@login_required
+def pass_change(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user,data = request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request,user)
+            return redirect('dashboard')
+    else:
+        form = PasswordChangeForm(user=request.user)
+    context = {
+        'form':form
+    }
+    return render(request,'pass_change.html',context)
